@@ -21,7 +21,6 @@ public class Employer {
     private String address;
     private String companyDetails;
     private String password;
-//    private EmployerMarket employerMarket;
     private boolean isLoggedIn;
 
     @DBRef

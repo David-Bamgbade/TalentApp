@@ -12,5 +12,5 @@ public class EmployerAdRequest {
     private String skillImage;
     private long payForWork;
     private String educationBackground;
-    private String skillLookingFor;
+    private String jobResponsibility;
 }
