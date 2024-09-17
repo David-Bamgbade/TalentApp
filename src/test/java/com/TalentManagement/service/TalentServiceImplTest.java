@@ -33,14 +33,6 @@ class TalentServiceImplTest {
 
 
     @Test
-    public void testTalentCanLogin(){
-        TalentLoginRequest request = new TalentLoginRequest();
-        request.setEmail("davidbamgbade@gmail.com");
-        request.setPassword("password");
-        assertTrue(talentService.loginTalent(request, request));
-    }
-
-    @Test
     public void testTalentCanLogout(){
         TalentLogoutRequest request = new TalentLogoutRequest();
         request.setEmail("davidbamgbade@gmail.com");

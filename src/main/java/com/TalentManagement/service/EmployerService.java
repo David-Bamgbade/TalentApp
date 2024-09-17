@@ -1,14 +1,14 @@
 package com.TalentManagement.service;
 
-import com.TalentManagement.dto.request.EmployerLoginRequest;
-import com.TalentManagement.dto.request.EmployerLogoutRequest;
-import com.TalentManagement.dto.request.EmployerSignupRequest;
-import com.TalentManagement.dto.response.EmployerSignupResponse;
+import com.TalentManagement.dto.request.*;
+import com.TalentManagement.dto.response.*;
 
 
 public interface EmployerService {
     EmployerSignupResponse signupEmployer(EmployerSignupRequest request);
-    boolean loginEmployer(EmployerLoginRequest email, EmployerLoginRequest password);
-    boolean logoutEmployer(EmployerLogoutRequest email, EmployerLogoutRequest password);
-
+    EmployerLoginResponse loginEmployer(EmployerLoginRequest email, EmployerLoginRequest password);
+    EmployerLogoutResponse logoutEmployer(EmployerLogoutRequest email, EmployerLogoutRequest password);
+    EmployerEditNameResponse editName(EmployerEmailRequest emailRequest, EmployerEditNameRequest request );
+    EmployerEditEmailResponse editEmail(EmployerEmailRequest email, EmployerEditEmailRequest request );
+    EmployerEditPasswordResponse editPassword(EmployerEmailAndPasswordRequest request, EmployerEditPasswordRequest newPassword );
 }

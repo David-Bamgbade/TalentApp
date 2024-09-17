@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document
-public class EmoloyerLoginResponse {
-   private boolean loginStatus = true;
+public class EmployerEditEmailResponse {
+    private String message;
 }

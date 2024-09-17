@@ -7,6 +7,5 @@ import com.TalentManagement.dto.response.TalentSignupResponse;
 
 public interface TalentService   {
     TalentSignupResponse signupTalent(TalentSignupRequest talentSignupRequest);
-    boolean loginTalent(TalentLoginRequest email, TalentLoginRequest password);
     boolean logoutTalent(TalentLogoutRequest talentLogoutRequest, TalentLogoutRequest request);
 }

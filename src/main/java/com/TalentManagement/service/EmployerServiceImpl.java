@@ -2,9 +2,7 @@ package com.TalentManagement.service;
 
 import com.TalentManagement.data.model.Employer;
 import com.TalentManagement.data.repositories.EmployerRepo;
-import com.TalentManagement.dto.request.EmployerLoginRequest;
-import com.TalentManagement.dto.request.EmployerLogoutRequest;
-import com.TalentManagement.dto.request.EmployerSignupRequest;
+import com.TalentManagement.dto.request.*;
 import com.TalentManagement.dto.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +36,7 @@ public class EmployerServiceImpl implements EmployerService {
         }
     }
 
-    public boolean loginEmployer(EmployerLoginRequest email, EmployerLoginRequest password ) {
+    public EmployerLoginResponse loginEmployer(EmployerLoginRequest email, EmployerLoginRequest password ) {
         Employer employer = employerRepo.findByEmailAndPassword(validateEmail(email.getEmail()).toLowerCase(), validatePassword(password.getPassword()).toLowerCase());
 
           if(employer != null) {
@@ -48,10 +46,14 @@ public class EmployerServiceImpl implements EmployerService {
             else {
                    throw new IllegalArgumentException("invalid email or password");
                }
-            return employer.isLoggedIn();
+
+            EmployerLoginResponse response = new EmployerLoginResponse();
+            response.setLoginStatus(true);
+
+            return response;
     }
 
-    public boolean logoutEmployer(EmployerLogoutRequest email, EmployerLogoutRequest password) {
+    public EmployerLogoutResponse logoutEmployer(EmployerLogoutRequest email, EmployerLogoutRequest password) {
         Employer employer = employerRepo.findByEmailAndPassword(validateEmail(email.getEmail()).toLowerCase(), validatePassword(password.getPassword()).toLowerCase());
 
         if(employer != null) {
@@ -61,22 +63,55 @@ public class EmployerServiceImpl implements EmployerService {
         else {
             throw new IllegalArgumentException("invalid email or password");
         }
-        return employer.isLoggedIn();
+        EmployerLogoutResponse response = new EmployerLogoutResponse();
+        response.setLoggedInStatus(false);
+        return response;
     }
 
+    public EmployerEditNameResponse editName(EmployerEmailRequest email, EmployerEditNameRequest request ) {
+        Employer employer = employerRepo.findByEmail(email.getEmail());
 
+        if(employer.isLoggedIn()){
+            employer.setFirstName(validateFirstName(request.getEmployerFirstName()));
+            employer.setLastName(validateLastName(request.getEmployerLastName()));
+            employerRepo.save(employer);
+            EmployerEditNameResponse response = new EmployerEditNameResponse();
+            response.setMessage("Successfully edited name");
+            return response;
+        }
+        else {
+            throw new IllegalArgumentException("invalid email or password must be logged in");
+        }
+    }
 
+    public EmployerEditEmailResponse editEmail(EmployerEmailRequest oldEmail, EmployerEditEmailRequest newEmail ) {
+       Employer employer = employerRepo.findByEmail(validateEmail(oldEmail.getEmail()).toLowerCase());
+       if(employer.isLoggedIn()) {
+           employer.setEmail(validateEmail(newEmail.getNewEmail().toLowerCase()));
+           employerRepo.save(employer);
+       }
 
+       else {
+           throw new IllegalArgumentException("invalid email or password must be logged in");
+       }
+       EmployerEditEmailResponse response = new EmployerEditEmailResponse();
+       response.setMessage("Successfully edited email");
+       return response;
+    }
 
-
-
-
-
-
-
-
-
-
+    public EmployerEditPasswordResponse editPassword(EmployerEmailAndPasswordRequest request, EmployerEditPasswordRequest newPassword ){
+        Employer employer = employerRepo.findByEmailAndPassword(validateEmail(request.getEmployerEmail()).toLowerCase(), validatePassword(request.getEmployerPassword()).toLowerCase());
+        if(employer.isLoggedIn()) {
+            employer.setPassword(validatePassword(newPassword.getNewPassword()));
+            employerRepo.save(employer);
+        }
+        else{
+            throw new IllegalArgumentException("invalid email or password must be logged in");
+        }
+        EmployerEditPasswordResponse response = new EmployerEditPasswordResponse();
+        response.setMessage("Successfully edited password");
+        return response;
+    }
 
 
 

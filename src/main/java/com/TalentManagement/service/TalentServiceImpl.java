@@ -5,19 +5,15 @@ import com.TalentManagement.data.repositories.TalentRepo;
 import com.TalentManagement.dto.request.TalentLoginRequest;
 import com.TalentManagement.dto.request.TalentLogoutRequest;
 import com.TalentManagement.dto.request.TalentSignupRequest;
-import com.TalentManagement.dto.response.EmoloyerLoginResponse;
+import com.TalentManagement.dto.response.TalentLoginResponse;
 import com.TalentManagement.dto.response.TalentLogoutResponse;
 import com.TalentManagement.dto.response.TalentSignupResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class TalentServiceImpl implements TalentService {
 
-
     private TalentRepo talentRepo;
-
 
     @Override
     public TalentSignupResponse signupTalent(TalentSignupRequest talentSignupRequest)  {
@@ -41,16 +37,6 @@ public class TalentServiceImpl implements TalentService {
         }
     }
 
-    public boolean loginTalent(TalentLoginRequest email, TalentLoginRequest password) {
-        EmoloyerLoginResponse response = new EmoloyerLoginResponse();
-        if(talentRepo.findByEmailAndPassword(validateEmail(email.getEmail()).toLowerCase(), validatePassword(password.getPassword().toLowerCase())) != null) {
-            return response.isLoginStatus();
-        }
-        else {
-            throw new IllegalArgumentException("Cant Login Check Email And Password");
-        }
-    }
-
 
     public boolean logoutTalent(TalentLogoutRequest email, TalentLogoutRequest password) {
         TalentLogoutResponse response = new TalentLogoutResponse();
@@ -62,15 +48,14 @@ public class TalentServiceImpl implements TalentService {
         }
     }
     private boolean talentLogin(){
-        EmoloyerLoginResponse response = new EmoloyerLoginResponse();
-        if(response.isLoginStatus()){
+        TalentLoginResponse response = new TalentLoginResponse();
+        if(response.isLoggedInStatus()){
             return true;
         }
         else{
             throw new IllegalArgumentException("Not LoggedIn");
         }
     }
-
 
     private String validateFirstName(String firstName ){
         if(firstName.contains(" ")){
@@ -118,7 +103,6 @@ public class TalentServiceImpl implements TalentService {
         }
     }
 
-
     private String validatePassword(String password){
         if(password.contains(" ")){
             throw new IllegalArgumentException("Invalid password");
@@ -127,12 +111,6 @@ public class TalentServiceImpl implements TalentService {
             return password;
         }
     }
-
-
-
-
-
-
 
 
 
